@@ -22,6 +22,8 @@ fi
 if [[ "$1" == "clean" ]]; then
     echo "[INFO] Cleaning build..."
     rm -rf "$BUILD_DIR"
+    echo "[INFO] Clean finished. Exiting."
+    exit 0
 fi
 
 mkdir -p "$BUILD_DIR"
