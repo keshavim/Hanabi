@@ -17,12 +17,12 @@ if not exist %BUILD_DIR% (
 
 cd %BUILD_DIR%
 
-echo [INFO] Configuring for %OS%...
-cmake ..\.. -DCMAKE_BUILD_TYPE=Debug -DBUILD_ASCII=ON -DBUILD_SFML=OFF
+echo [INFO] Configuring project...
+cmake ..\.. -DCMAKE_BUILD_TYPE=Debug -DBUILD_SFML=OFF
 
 echo [INFO] Building project...
 cmake --build . --config Debug
 
-echo [INFO] Done. Executables are under build\%OS%\frontend\hanabi.exe
+echo [INFO] Done. Executable is at %BUILD_DIR%\hanabi.exe
 
 endlocal

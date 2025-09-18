@@ -6,6 +6,7 @@
 
 
 
-int main() {
-    print();
+int main()
+{
+    Game::print();
 }

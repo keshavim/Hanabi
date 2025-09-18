@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 set -e
 
-FRONTEND=${1:-ascii}  # default to ascii
-
 OS=$(uname | tr '[:upper:]' '[:lower:]')
 if [[ "$OS" == "darwin" ]]; then
     OS="mac"
 fi
 
-EXE="build/$OS/$FRONTEND/hanabi"
+EXE="build/$OS/hanabi"
 
 if [[ ! -x "$EXE" ]]; then
     echo "[ERROR] Executable not found: $EXE"
@@ -16,5 +14,5 @@ if [[ ! -x "$EXE" ]]; then
     exit 1
 fi
 
-echo "[INFO] Running $FRONTEND frontend..."
+echo "[INFO] Running hanabi..."
 "$EXE"

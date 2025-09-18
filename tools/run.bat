@@ -1,10 +1,8 @@
 @echo off
 setlocal
 
-set FRONTEND=%1
-if "%FRONTEND%"=="" set FRONTEND=ascii
-
-set EXE=build\windows\%FRONTEND%\hanabi.exe
+set OS=windows
+set EXE=build\%OS%\hanabi.exe
 
 if not exist "%EXE%" (
     echo [ERROR] Executable not found: %EXE%
@@ -12,5 +10,7 @@ if not exist "%EXE%" (
     exit /b 1
 )
 
-echo [INFO] Running %FRONTEND% frontend...
+echo [INFO] Running hanabi...
 "%EXE%"
+
+endlocal

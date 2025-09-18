@@ -1,9 +1,13 @@
 //
 // Created by overlord on 9/18/25.
 //
-#include "hanabi.h"
+#include "hanabi_pch.h"
+#include "core/test.h"
 
-void print() {
-        std::cout << "Hello World!\n";
+Game::Game() = default;
 
+void Game::print()
+{
+    print_debug("hello world");
 }
+

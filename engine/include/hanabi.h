@@ -4,8 +4,9 @@
 
 #ifndef HANABI_TEST_H
 #define HANABI_TEST_H
-#include "iostream"
-void print();
+
+
+#include "core/test.h"
 
 
 #endif //HANABI_TEST_H

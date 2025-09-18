@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-# Detect OS folder name
+# OS folder
 OS=$(uname | tr '[:upper:]' '[:lower:]')
 if [[ "$OS" == "darwin" ]]; then
     OS="mac"
@@ -9,7 +9,7 @@ fi
 
 BUILD_DIR="build/$OS"
 
-# Detect CPU cores
+# CPU cores
 if command -v nproc >/dev/null 2>&1; then
     CORES=$(nproc)
 elif command -v sysctl >/dev/null 2>&1; then
@@ -25,15 +25,13 @@ if [[ "$1" == "clean" ]]; then
     echo "[INFO] Clean finished. Exiting."
     exit 0
 fi
-
 mkdir -p "$BUILD_DIR"
 cd "$BUILD_DIR"
 
-#not using right now, switch to on when using
-echo "[INFO] Configuring for $OS..."
-cmake ../.. -DCMAKE_BUILD_TYPE=Debug -DBUILD_ASCII=ON -DBUILD_SFML=OFF
+echo "[INFO] Configuring project..."
+cmake ../.. -DCMAKE_BUILD_TYPE=Debug -DBUILD_SFML=OFF
 
 echo "[INFO] Building..."
 cmake --build . --parallel "$CORES"
 
-echo "[INFO] Done. Executables are under build/$OS/<frontend>/hanabi"
+echo "[INFO] Done. Executable is at $BUILD_DIR/hanabi"
