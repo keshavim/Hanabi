@@ -1,0 +1,33 @@
+# Build files
+/build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+*.cmake
+
+# Executables
+*.out
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Logs
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+env/
+venv/
+*.pkl
+
+# Models
+/models/*.pt
+/models/*.onnx
+
+# IDE
+.idea/
+.vscode/
