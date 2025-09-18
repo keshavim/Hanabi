@@ -8,11 +8,7 @@
 #pragma once
 
 // Standard headers
-
-#include <string>
 #include <memory>
-#include <iostream>
-
 
 // Type aliases for convenience
 using u8  = std::uint8_t;
@@ -31,18 +27,6 @@ using f64 = double;
 // Small utility macros
 #define UNUSED(x) (void)(x)
 #define ARRAY_SIZE(arr) (sizeof(arr)/sizeof(arr[0]))
-
-// Helper function (will remove these)
-inline void print_debug(const std::string& msg) {
-    std::cout << "[DEBUG] " << msg << std::endl;
-}
-
-inline void print_debug(const std::string& msg, u32 value) {
-    std::cout << "[DEBUG] " << msg << ": " << value << std::endl;
-}
-
-
-
 
 
 #endif //HANABITETRISAI_CORE_H
