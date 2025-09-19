@@ -4,34 +4,38 @@ project(HanabiTetrisAI LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Options
-option(BUILD_SFML "Enable SFML frontend" OFF)
+
+find_package(Curses REQUIRED)
+include_directories(${CURSES_INCLUDE_DIR})
+
 
 # Engine library
-add_library(engine
-        engine/src/Game.cpp
-        # add more engine .cpp files here
-)
-target_include_directories(engine PUBLIC engine/include)
+file(GLOB_RECURSE ENGINE_SOURCES engine/src/*.cpp)
+add_library(engine ${ENGINE_SOURCES})
+target_include_directories(engine
+        PUBLIC
+        engine/include
+        ${CURSES_INCLUDE_DIR})
 
 # Precompiled header
 target_precompile_headers(engine PRIVATE engine/include/hanabi_pch.h)
 
-# Single executable for all frontends
-add_executable(hanabi
-        frontend/main.cpp
+
+
+# --- Executable ---
+file(GLOB_RECURSE FRONTEND_SOURCES frontend/*.cpp)
+add_executable(hanabi ${FRONTEND_SOURCES})
+target_include_directories(hanabi PRIVATE ${CURSES_INCLUDE_DIR})
+
+target_link_libraries(hanabi
+        PRIVATE
+        engine
+        ${CURSES_LIBRARIES}
+
 )
 
-target_link_libraries(hanabi PRIVATE engine)
-
-# Output folder
+# Output folder (bin/<OS>/hanabi)
 set_target_properties(hanabi PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_SYSTEM_NAME_LOWER}
 )
 
-# SFML section (disabled for now)
-if(BUILD_SFML)
-    find_package(SFML 2.5 COMPONENTS system window graphics REQUIRED)
-    target_sources(hanabi PRIVATE frontend/sfml/main.cpp)
-    target_link_libraries(hanabi PRIVATE sfml-system sfml-window sfml-graphics)
-endif()

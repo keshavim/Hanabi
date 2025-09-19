@@ -1,28 +1,30 @@
 @echo off
-setlocal
+setlocal enabledelayedexpansion
 
-set OS=windows
-set BUILD_DIR=build\%OS%
+:: Detect OS
+set OS=win64
 
+:: Find project root (parent of script dir)
+set SCRIPT_DIR=%~dp0
+set PROJECT_ROOT=%SCRIPT_DIR%\..
+set BUILD_DIR=%PROJECT_ROOT%\build\%OS%
+set EXE_NAME=hanabi.exe
+
+:: Clean
 if "%1"=="clean" (
     echo [INFO] Cleaning build...
-    rmdir /s /q "%BUILD_DIR%"
+    rmdir /s /q "%BUILD_DIR%" 2>nul
     echo [INFO] Clean finished. Exiting.
     exit /b 0
 )
 
-if not exist %BUILD_DIR% (
-    mkdir %BUILD_DIR%
-)
-
-cd %BUILD_DIR%
-
-echo [INFO] Configuring project...
-cmake ..\.. -DCMAKE_BUILD_TYPE=Debug -DBUILD_SFML=OFF
-
-echo [INFO] Building project...
+:: Build
+echo [INFO] Building in %BUILD_DIR%...
+if not exist "%BUILD_DIR%" mkdir "%BUILD_DIR%"
+pushd "%BUILD_DIR%"
+cmake "%PROJECT_ROOT%" -DCMAKE_BUILD_TYPE=Debug
 cmake --build . --config Debug
+popd
 
-echo [INFO] Done. Executable is at %BUILD_DIR%\hanabi.exe
-
+echo [INFO] Done. Executable is at %BUILD_DIR%\%EXE_NAME%
 endlocal

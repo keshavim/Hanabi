@@ -1,12 +1,18 @@
 @echo off
-setlocal
+setlocal enabledelayedexpansion
 
-set OS=windows
-set EXE=build\%OS%\hanabi.exe
+set OS=win64
+set SCRIPT_DIR=%~dp0
+set PROJECT_ROOT=%SCRIPT_DIR%\..
+set BUILD_DIR=%PROJECT_ROOT%\build\%OS%
+set EXE=%BUILD_DIR%\hanabi.exe
 
+:: Build first
+call %SCRIPT_DIR%\build.bat
+
+:: Run
 if not exist "%EXE%" (
     echo [ERROR] Executable not found: %EXE%
-    echo Build first with tools\build_all.bat
     exit /b 1
 )
 
