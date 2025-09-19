@@ -7,6 +7,6 @@
 
 
 #include "core/Engine.h"
-
+#include "core/logging.h"
 
 #endif //HANABI_TEST_H

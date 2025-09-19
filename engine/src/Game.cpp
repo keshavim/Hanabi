@@ -1,7 +1,9 @@
 
 
+#include "hanabi_pch.h"
 #include "core/Game.h"
 #include <iostream>
+
 namespace hanabi {
 Game::Game() {
     init();

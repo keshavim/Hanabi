@@ -1,73 +1,57 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include <chrono>
-#include <iomanip>
-#include <ctime>
 #include <format>
 
+// ==========================
 // ANSI color codes
-constexpr const char* COLOR_RESET  = "\033[0m";
-constexpr const char* COLOR_RED    = "\033[31m";
-constexpr const char* COLOR_YELLOW = "\033[33m";
-constexpr const char* COLOR_GREEN  = "\033[32m";
-constexpr const char* COLOR_BLUE   = "\033[34m";
-
-
-// Get current time as HH:MM:SS
-inline std::string current_time() {
-    const auto now = std::chrono::system_clock::now();
-    auto itt = std::chrono::system_clock::to_time_t(now);
-    std::tm tm{};
-#if defined(_WIN32)
-    localtime_s(&tm, &itt);
-#else
-    localtime_r(&itt, &tm);
-#endif
-    return std::format("{:02}:{:02}:{:02}", tm.tm_hour, tm.tm_min, tm.tm_sec);
-}
-
 // ==========================
-// Simple print function using std::format
-// ==========================
+#define TEXT_COLOR_RESET  "\033[0m"
+#define TEXT_COLOR_RED    "\033[31m"
+#define TEXT_COLOR_YELLOW "\033[33m"
+#define TEXT_COLOR_GREEN  "\033[32m"
+#define TEXT_COLOR_BLUE   "\033[34m"
+
+
 namespace hanabi {
+
+// ==========================
+// Core printing functions (C++23-style)
+// ==========================
 template<typename... Args>
-inline void print(const std::string& fmt, const Args&... args) {
-    std::fputs(std::vformat(fmt, std::make_format_args(args...)).c_str(), stdout);
-}
-inline void print(const std::string& fmt) {
-    std::fputs(fmt.c_str(), stdout);
+inline void print(const std::string& fmt, Args&&... args) {
+    std::cout << std::vformat(fmt, std::make_format_args(args...));
 }
 
 template<typename... Args>
-inline void println(const std::string& fmt, const Args&... args) {
-    std::fputs(std::vformat(fmt, std::make_format_args(args...)).c_str(), stdout);
-    putchar('\n');
+inline void println(const std::string& fmt, Args&&... args) {
+    std::cout << std::vformat(fmt, std::make_format_args(args...)) << '\n';
 }
-inline void println(const std::string& fmt) {
-    std::fputs((fmt + "\n").c_str(), stdout);
-}
+
 inline void println() {
-    putchar('\n');
-}
+    std::cout << '\n';
 }
 
 // ==========================
-// Logging macros with colors
+// Logging helper
 // ==========================
-#define LOG(level, color, ...) \
-do { \
-println("{}[{}] [{}] {}{}", color, __current_time(), level, std::vformat(__VA_ARGS__)); \
-} while(0)
-
-// Helper to wrap fmt+args
 template<typename... Args>
-inline std::string format_args_wrapper(const std::string& fmt, const Args&... args) {
-    return std::vformat(fmt, std::make_format_args(args...));
+inline void log(const char* level, const char* color,
+                const char* file, int line,
+                const std::string& fmt, Args&&... args)
+{
+    std::cout << color
+              << "[" << file << ":" << line << "] [" << level << "] "
+              << std::vformat(fmt, std::make_format_args(args...))
+              << TEXT_COLOR_RESET << '\n';
 }
 
-// Variadic logging macros
-#define HANABI_INFO(...)  hanabi::println("{}[{}] [INFO] {}{}", COLOR_GREEN,  current_time(), format_args_wrapper(__VA_ARGS__), COLOR_RESET)
-#define HANABI_WARN(...)  hanabi::println("{}[{}] [WARN] {}{}", COLOR_YELLOW, current_time(), format_args_wrapper(__VA_ARGS__), COLOR_RESET)
-#define HANABI_ERROR(...) hanabi::println("{}[{}] [ERROR] {}{}", COLOR_RED,    current_time(), format_args_wrapper(__VA_ARGS__), COLOR_RESET)
-#define HANABI_DEBUG(...) hanabi::println("{}[{}] [DEBUG] {}{}", COLOR_BLUE,   current_time(), format_args_wrapper(__VA_ARGS__), COLOR_RESET)
+} // namespace hanabi
+
+// ==========================
+// Logging macros
+// ==========================
+#define HANABI_INFO(fmt, ...)  hanabi::log("INFO",  TEXT_COLOR_GREEN,  __FILE__, __LINE__, fmt, ##__VA_ARGS__)
+#define HANABI_WARN(fmt, ...)  hanabi::log("WARN",  TEXT_COLOR_YELLOW, __FILE__, __LINE__, fmt, ##__VA_ARGS__)
+#define HANABI_ERROR(fmt, ...) hanabi::log("ERROR", TEXT_COLOR_RED,    __FILE__, __LINE__, fmt, ##__VA_ARGS__)
+#define HANABI_DEBUG(fmt, ...) hanabi::log("DEBUG", TEXT_COLOR_BLUE,   __FILE__, __LINE__, fmt, ##__VA_ARGS__)
