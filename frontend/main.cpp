@@ -8,5 +8,6 @@
 
 int main()
 {
-    Game::print();
+    hanabi::Engine engine;
+    engine.run();
 }

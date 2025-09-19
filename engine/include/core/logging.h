@@ -15,7 +15,7 @@ constexpr const char* COLOR_BLUE   = "\033[34m";
 
 
 // Get current time as HH:MM:SS
-inline std::string __current_time() {
+inline std::string current_time() {
     const auto now = std::chrono::system_clock::now();
     auto itt = std::chrono::system_clock::to_time_t(now);
     std::tm tm{};
@@ -62,12 +62,12 @@ println("{}[{}] [{}] {}{}", color, __current_time(), level, std::vformat(__VA_AR
 
 // Helper to wrap fmt+args
 template<typename... Args>
-inline std::string __format_args_wrapper(const std::string& fmt, const Args&... args) {
+inline std::string format_args_wrapper(const std::string& fmt, const Args&... args) {
     return std::vformat(fmt, std::make_format_args(args...));
 }
 
 // Variadic logging macros
-#define HANABI_INFO(...)  hanabi::println("{}[{}] [INFO] {}{}", COLOR_GREEN,  __current_time(), __format_args_wrapper(__VA_ARGS__), COLOR_RESET)
-#define HANABI_WARN(...)  hanabi::println("{}[{}] [WARN] {}{}", COLOR_YELLOW, __current_time(), __format_args_wrapper(__VA_ARGS__), COLOR_RESET)
-#define HANABI_ERROR(...) hanabi::println("{}[{}] [ERROR] {}{}", COLOR_RED,    __current_time(), __format_args_wrapper(__VA_ARGS__), COLOR_RESET)
-#define HANABI_DEBUG(...) hanabi::println("{}[{}] [DEBUG] {}{}", COLOR_BLUE,   __current_time(), __format_args_wrapper(__VA_ARGS__), COLOR_RESET)
+#define HANABI_INFO(...)  hanabi::println("{}[{}] [INFO] {}{}", COLOR_GREEN,  current_time(), format_args_wrapper(__VA_ARGS__), COLOR_RESET)
+#define HANABI_WARN(...)  hanabi::println("{}[{}] [WARN] {}{}", COLOR_YELLOW, current_time(), format_args_wrapper(__VA_ARGS__), COLOR_RESET)
+#define HANABI_ERROR(...) hanabi::println("{}[{}] [ERROR] {}{}", COLOR_RED,    current_time(), format_args_wrapper(__VA_ARGS__), COLOR_RESET)
+#define HANABI_DEBUG(...) hanabi::println("{}[{}] [DEBUG] {}{}", COLOR_BLUE,   current_time(), format_args_wrapper(__VA_ARGS__), COLOR_RESET)
