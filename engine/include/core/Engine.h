@@ -5,29 +5,27 @@
 #ifndef HANABITETRISAI_ENGINE_H
 #define HANABITETRISAI_ENGINE_H
 
-
-#include <memory>
-#include <string>
-
 #include "Game.h"
+#include <string>
 
 namespace hanabi {
 
 class Engine {
 public:
-    Engine();
+    Engine() = default;
     ~Engine();
 
-    void run();                 // Main engine loop (menu, etc.)
-    void startGame(const std::string& mode); // Start a game session
+    void run();
+    void addGame(int w, int h);
 
 private:
-    void init();                // Initialize engine resources
-    void shutdown();            // Cleanup
-
     bool running {false};
-    Game currentGame; // Active game session
+    std::vector<Game> games;
+
+    // one shared render surface
+    int screenWidth {1200};
+    int screenHeight {800};
 };
-}
+} // namespace hanabi
 
 #endif //HANABITETRISAI_ENGINE_H

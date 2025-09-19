@@ -4,36 +4,28 @@
 
 #ifndef HANABITETRISAI_GAME_H
 #define HANABITETRISAI_GAME_H
+#include <string>
+#include <vector>
+#include <raylib.h>
 
 namespace hanabi {
-#include <memory>
-
-// Forward declarations
-class Window;
-class Renderer;
-class EventHandler;
-
 class Game {
 public:
-    Game();
-    ~Game();
+    Game() = default;
+    ~Game() = default;
 
-    void run();  // Main game loop
-    void reset(); // Reset game state
+    void init(int boardWidth, int boardHeight);
+    void update();
+    void draw(int offsetX, int offsetY, int cellSize);
+
+    bool isRunning() const { return running; }
+    void stop() { running = false; }
 
 private:
-    void init();    // Initialize game resources
-    void shutdown(); // Clean up resources
-    void update();   // Game logic update
-    void render();   // Draw frame
-    void handleEvents(); // Process input/events
-
-    // Wrappers for backend (to be set by Engine later)
-    // std::unique_ptr<Window> window;
-    // std::unique_ptr<Renderer> renderer;
-    // std::unique_ptr<EventHandler> eventHandler;
-
     bool running {false};
+    int width {10};
+    int height {20};
+    // later: board state, pieces, score, etc.
 };
 }
 

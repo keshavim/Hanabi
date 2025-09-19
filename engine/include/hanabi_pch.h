@@ -5,8 +5,6 @@
 #ifndef HANABITETRISAI_HANABI_PCH_H
 #define HANABITETRISAI_HANABI_PCH_H
 
-#include "core/core.h"
-
 // commonly used headers
 #include <vector>
 #include <string>
@@ -19,6 +17,7 @@
 
 #include <cstdint>
 #include <cstddef>
+#include <cmath>
 
 
 #endif //HANABITETRISAI_HANABI_PCH_H

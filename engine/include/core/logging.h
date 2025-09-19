@@ -1,4 +1,8 @@
-#pragma once
+
+#ifndef HANABITETRISAI_LOGGING_H
+#define HANABITETRISAI_LOGGING_H
+
+#include <filesystem>
 #include <iostream>
 #include <string>
 #include <format>
@@ -40,6 +44,9 @@ inline void log(const char* level, const char* color,
                 const char* file, int line,
                 const std::string& fmt, Args&&... args)
 {
+    std::filesystem::path filepath(file);
+    std::string filename = filepath.filename().string();
+
     std::cout << color
               << "[" << file << ":" << line << "] [" << level << "] "
               << std::vformat(fmt, std::make_format_args(args...))
@@ -55,3 +62,6 @@ inline void log(const char* level, const char* color,
 #define HANABI_WARN(fmt, ...)  hanabi::log("WARN",  TEXT_COLOR_YELLOW, __FILE__, __LINE__, fmt, ##__VA_ARGS__)
 #define HANABI_ERROR(fmt, ...) hanabi::log("ERROR", TEXT_COLOR_RED,    __FILE__, __LINE__, fmt, ##__VA_ARGS__)
 #define HANABI_DEBUG(fmt, ...) hanabi::log("DEBUG", TEXT_COLOR_BLUE,   __FILE__, __LINE__, fmt, ##__VA_ARGS__)
+
+
+#endif

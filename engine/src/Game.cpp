@@ -2,57 +2,34 @@
 
 #include "hanabi_pch.h"
 #include "core/Game.h"
-#include <iostream>
+#include "core/logging.h"
 
 namespace hanabi {
-Game::Game() {
-    init();
-}
-
-Game::~Game() {
-    shutdown();
-}
-
-void Game::init() {
-    // TODO: Initialize backend wrappers, ECS, etc.
-    std::cout << "[Game] Initialized\n";
-}
-
-void Game::shutdown() {
-    // TODO: Cleanup resources
-    std::cout << "[Game] Shutdown\n";
-}
-
-void Game::reset() {
-    // TODO: Reset board, score, entities, etc.
-    std::cout << "[Game] Reset\n";
-}
-
-void Game::run() {
+void Game::init(int boardWidth, int boardHeight) {
+    width = boardWidth;
+    height = boardHeight;
     running = true;
-    std::cout << "[Game] Running\n";
-
-    // Basic loop stub
-    while (running) {
-        handleEvents();
-        update();
-        render();
-        running = false; // TODO: replace with real quit condition
-    }
-}
-
-void Game::handleEvents() {
-    // TODO: Wrap input library
-    std::cout << "[Game] Handling events\n";
+    std::cout << "[Game] Initialized board "
+              << width << "x" << height << "\n";
 }
 
 void Game::update() {
-    // TODO: Update game state (falling pieces, collisions, etc.)
-    std::cout << "[Game] Updating\n";
+    // TODO: game logic (piece falling, collisions, etc.)
 }
 
-void Game::render() {
-    // TODO: Call renderer to draw
-    std::cout << "[Game] Rendering\n";
+void Game::draw(int offsetX, int offsetY, int cellSize) {
+    // Draw a simple grid as a placeholder
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            DrawRectangleLines(
+                offsetX + x * cellSize,
+                offsetY + y * cellSize,
+                cellSize, cellSize,
+                DARKGRAY
+            );
+        }
+    }
+    DrawText("Tetris", offsetX + 5, offsetY + 5, 20, RAYWHITE);
 }
+
 }

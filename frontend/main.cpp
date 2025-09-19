@@ -7,12 +7,13 @@
 
 int main()
 {
-    hanabi::println("hello");
-    hanabi::println("hello {}", 1);
+    hanabi::Engine engine;
+    engine.addGame(10, 20);
+    engine.addGame(10, 20);
+    engine.addGame(10, 20);
+    engine.addGame(10, 20);
 
-    HANABI_DEBUG("please");
-
-    HANABI_ERROR("please {}", "work");
+    engine.run();
 
 
 }

@@ -7,41 +7,58 @@
 #include <iostream>
 
 namespace hanabi {
-Engine::Engine() {
-    init();
-}
-
 Engine::~Engine() {
-    shutdown();
+    CloseWindow();
 }
 
-void Engine::init() {
-    // TODO: Initialize subsystems (logging, configs, etc.)
-    std::cout << "[Engine] Initialized\n";
-}
-
-void Engine::shutdown() {
-    // TODO: Clean up subsystems
-    std::cout << "[Engine] Shutdown\n";
+void Engine::addGame(int w, int h) {
+    Game g;
+    g.init(w, h);
+    games.emplace_back(g);
 }
 
 void Engine::run() {
+    InitWindow(screenWidth, screenHeight, "Tetris AI Simulations");
+    SetTargetFPS(60);
+
     running = true;
+    while (running && !WindowShouldClose()) {
+        // --- update ---
+        for (auto& g : games) {
+            if (g.isRunning()) {
+                g.update();
+            }
+        }
 
-    // TODO: Replace with menu/GUI
-    std::cout << "[Engine] Running\n";
+        // --- render ---
+        BeginDrawing();
+        ClearBackground(BLACK);
 
-    // For now, auto-start a game in "ascii" mode
-    startGame("ascii");
+        if (!games.empty()) {
+            int cols = (int)std::ceil(std::sqrt(games.size()));
+            int rows = (int)std::ceil((float)games.size() / cols);
 
+            int cellSize = 20; // size of each block
+            int gameWidthPx  = games[0].isRunning() ? games[0].isRunning() : 10 * cellSize;
+            int gameHeightPx = 20 * cellSize;
+
+            int spacingX = screenWidth / cols;
+            int spacingY = screenHeight / rows;
+
+            for (size_t i = 0; i < games.size(); i++) {
+                int col = i % cols;
+                int row = i / cols;
+                int offsetX = col * spacingX + 10;
+                int offsetY = row * spacingY + 10;
+
+                games[i].draw(offsetX, offsetY, cellSize);
+            }
+        }
+
+        EndDrawing();
+    }
     running = false;
+    std::cout << "[Engine] All games ended\n";
 }
 
-void Engine::startGame(const std::string& mode) {
-    std::cout << "[Engine] Starting game in mode: " << mode << "\n";
-
-    // TODO: Create correct backend based on mode (ascii, sfml, etc.)
-    currentGame = Game();
-    currentGame.run();
-}
 }

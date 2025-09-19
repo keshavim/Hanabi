@@ -4,34 +4,33 @@ project(HanabiTetrisAI LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-
-find_package(Curses REQUIRED)
-include_directories(${CURSES_INCLUDE_DIR})
+# Add raylib
+set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE) # Don’t build raylib’s examples
+add_subdirectory(vendor/raylib)
 
 
 # Engine library
 file(GLOB_RECURSE ENGINE_SOURCES engine/src/*.cpp)
-add_library(engine ${ENGINE_SOURCES})
-target_include_directories(engine
+add_library(hanabi_engine ${ENGINE_SOURCES})
+target_include_directories(hanabi_engine
         PUBLIC
         engine/include
-        ${CURSES_INCLUDE_DIR})
+)
+target_link_libraries(hanabi_engine PRIVATE raylib)
 
 # Precompiled header
-target_precompile_headers(engine PRIVATE engine/include/hanabi_pch.h)
+target_precompile_headers(hanabi_engine PRIVATE engine/include/hanabi_pch.h)
 
 
 
 # --- Executable ---
 file(GLOB_RECURSE FRONTEND_SOURCES frontend/*.cpp)
 add_executable(hanabi ${FRONTEND_SOURCES})
-target_include_directories(hanabi PRIVATE ${CURSES_INCLUDE_DIR})
 
 target_link_libraries(hanabi
         PRIVATE
-        engine
-        ${CURSES_LIBRARIES}
-
+        hanabi_engine
+        raylib
 )
 
 # Output folder (bin/<OS>/hanabi)
